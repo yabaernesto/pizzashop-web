@@ -4,14 +4,18 @@ import { Toaster } from 'sonner';
 
 import { router } from './routes';
 
+import { ThemeProvider } from './components/theme/theme-provider';
+
 import './index.css';
 
 export function App() {
   return (
     <HelmetProvider>
-      <Helmet titleTemplate="%s | pizza.shop" />
-      <Toaster richColors />
-      <RouterProvider router={router} />
+      <ThemeProvider storageKey="pizzashop-theme" defaultTheme="dark">
+        <Helmet titleTemplate="%s | pizza.shop" />
+        <Toaster richColors />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </HelmetProvider>
   );
 }
