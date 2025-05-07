@@ -18,7 +18,7 @@ export function OrderDetails() {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Pedido: 1i1m2121021m</DialogTitle>
+        <DialogTitle>Pedido: 9EQXWDQ9DQS208839</DialogTitle>
         <DialogDescription>Detalhes do pedido</DialogDescription>
       </DialogHeader>
 
