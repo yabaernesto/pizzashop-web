@@ -1,12 +1,12 @@
 import {
-  ResponsiveContainer,
+  CartesianGrid,
+  Line,
   LineChart,
+  ResponsiveContainer,
   XAxis,
   YAxis,
-  Line,
-  CartesianGrid,
-} from 'recharts';
-import colors from 'tailwindcss/colors';
+} from 'recharts'
+import colors from 'tailwindcss/colors'
 
 import {
   Card,
@@ -14,7 +14,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@/components/ui/card'
 
 export function RevenueChart() {
   const data = [
@@ -25,47 +25,47 @@ export function RevenueChart() {
     { date: '14/12', revenue: 2500 },
     { date: '15/12', revenue: 800 },
     { date: '16/12', revenue: 640 },
-  ];
+  ]
 
   return (
     <Card className="col-span-6">
       <CardHeader className="flex-row items-center justify-between pb-8">
         <div className="space-y-1">
-          <CardTitle className="text-base font-medium">
+          <CardTitle className="font-medium text-base">
             Receita no período
           </CardTitle>
           <CardDescription>Receita diária no período</CardDescription>
         </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={240}>
+        <ResponsiveContainer height={240} width="100%">
           <LineChart data={data} style={{ fontSize: 12 }}>
-            <XAxis dataKey="date" axisLine={false} tickLine={false} dy={16} />
+            <XAxis axisLine={false} dataKey="date" dy={16} tickLine={false} />
 
             <YAxis
-              stroke="#888"
               axisLine={false}
-              tickLine={false}
-              width={80}
+              stroke="#888"
               tickFormatter={(value: number) =>
                 value.toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'BRL',
                 })
               }
+              tickLine={false}
+              width={80}
             />
 
-            <CartesianGrid vertical={false} className="stroke-muted" />
+            <CartesianGrid className="stroke-muted" vertical={false} />
 
             <Line
-              type="linear"
-              strokeWidth={2}
               dataKey="revenue"
-              stroke={colors['violet']['500']}
+              stroke={colors.violet['500']}
+              strokeWidth={2}
+              type="linear"
             />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
-  );
+  )
 }

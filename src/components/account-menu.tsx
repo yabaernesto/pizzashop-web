@@ -1,22 +1,22 @@
-import { Building, ChevronDown, LogOut } from 'lucide-react';
+import { Building, ChevronDown, LogOut } from 'lucide-react'
 
-import { Button } from './ui/button';
+import { Button } from './ui/button'
 import {
   DropdownMenu,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
-} from './ui/dropdown-menu';
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu'
 
 export function AccountMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          className="flex select-none items-center gap-2"
           variant="outline"
-          className="flex items-center gap-2 select-none"
         >
           Pizza Shop
           <ChevronDown className="h-4 w-4" />
@@ -25,9 +25,7 @@ export function AccountMenu() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col">
           <span>Yaba Ernesto</span>
-          <span className="text-muted-foreground text-xs font-normal">
-            yaba@gmail.com.ao
-          </span>
+          <span className="">yabaernesto@spacenauta.com.ao</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
@@ -40,5 +38,5 @@ export function AccountMenu() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
