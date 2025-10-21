@@ -3,11 +3,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+
 import {
   type GetManagedRestaurantResponse,
   getManagedRestaurant,
 } from '@/api/get-managed-restaurant'
 import { updateProfile } from '@/api/update-profile'
+
 import { Button } from './ui/button'
 import {
   DialogClose,
