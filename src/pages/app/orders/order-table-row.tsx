@@ -5,6 +5,7 @@ import { ArrowRight, Search, X } from 'lucide-react';
 import { useState } from 'react';
 
 import { cancelOrder } from '@/api/cancel-order';
+import type { GetOrdersResponse } from '@/api/get-orders';
 
 import { OrderStatus } from '@/components/order-status';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,6 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { TableCell, TableRow } from '@/components/ui/table';
 
 import { OrderDetails } from './order-details';
-import type { GetOrdersResponse } from '@/api/get-orders';
 
 export type OrderTableRowProps = {
   order: {
