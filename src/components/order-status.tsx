@@ -1,13 +1,13 @@
-type OrderStatus =
+export type OrderStatus =
   | 'pending'
   | 'processing'
   | 'delivering'
   | 'delivered'
-  | 'canceled'
+  | 'canceled';
 
 type OrderStatusProps = {
-  status: OrderStatus
-}
+  status: OrderStatus;
+};
 
 const orderStatusMap: Record<OrderStatus, string> = {
   pending: 'Pendente',
@@ -15,7 +15,7 @@ const orderStatusMap: Record<OrderStatus, string> = {
   delivered: 'Entregue',
   delivering: 'Em entrega',
   processing: 'Em preparo',
-}
+};
 
 export function OrderStatus({ status }: OrderStatusProps) {
   return (
@@ -36,9 +36,9 @@ export function OrderStatus({ status }: OrderStatusProps) {
         <span className="h-2 w-2 rounded-full bg-amber-500" />
       )}
 
-      <span className="font-medium text-muted-foreground">
+      <span className="text-muted-foreground font-medium">
         {orderStatusMap[status]}
       </span>
     </div>
-  )
+  );
 }
