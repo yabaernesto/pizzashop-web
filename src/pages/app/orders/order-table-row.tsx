@@ -1,7 +1,10 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ArrowRight, Search, X } from 'lucide-react';
 import { useState } from 'react';
+
+import { cancelOrder } from '@/api/cancel-order';
 
 import { OrderStatus } from '@/components/order-status';
 import { Button } from '@/components/ui/button';
@@ -9,6 +12,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { TableCell, TableRow } from '@/components/ui/table';
 
 import { OrderDetails } from './order-details';
+import type { GetOrdersResponse } from '@/api/get-orders';
 
 export type OrderTableRowProps = {
   order: {
@@ -22,6 +26,33 @@ export type OrderTableRowProps = {
 
 export function OrderTableRow({ order }: OrderTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: cancelOrderFn } = useMutation({
+    mutationFn: cancelOrder,
+    async onSuccess(_, { orderId }) {
+      const orderListCache = queryClient.getQueriesData<GetOrdersResponse>({
+        queryKey: ['orders'],
+      });
+
+      orderListCache.forEach(([cacheKey, cacheData]) => {
+        if (!cacheData) {
+          return;
+        }
+
+        queryClient.setQueryData<GetOrdersResponse>(cacheKey, {
+          ...cacheData,
+          orders: cacheData.orders.map((order) => {
+            if (order.orderId === orderId) {
+              return { ...order, status: 'canceled' };
+            }
+
+            return order;
+          }),
+        });
+      });
+    },
+  });
 
   return (
     <TableRow>
@@ -63,7 +94,12 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         </Button>
       </TableCell>
       <TableCell>
-        <Button size="xs" variant="ghost">
+        <Button
+          disabled={!['pending', 'processing'].includes(order.status)}
+          onClick={() => cancelOrderFn({ orderId: order.orderId })}
+          size="xs"
+          variant="ghost"
+        >
           <X className="mr-2 h-4 w-4" />
           Cancelar
         </Button>

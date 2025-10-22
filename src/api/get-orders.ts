@@ -1,26 +1,26 @@
-import { api } from '@/lib/axios'
+import { api } from '@/lib/axios';
 
 export type GetOrdersQuery = {
-  pageIndex?: number | null
-  orderId?: string | null
-  customerName?: string | null
-  status?: string | null
-}
+  pageIndex?: number | null;
+  orderId?: string | null;
+  customerName?: string | null;
+  status?: string | null;
+};
 
-type GetOrdersResponse = {
+export type GetOrdersResponse = {
   orders: {
-    orderId: string
-    createdAt: string
-    status: 'pending' | 'processing' | 'delivering' | 'delivered' | 'canceled'
-    total: string
-    customerName: string
-  }[]
+    orderId: string;
+    createdAt: string;
+    status: 'pending' | 'processing' | 'delivering' | 'delivered' | 'canceled';
+    total: string;
+    customerName: string;
+  }[];
   meta: {
-    pageIndex: number
-    perPage: number
-    totalCount: number
-  }
-}
+    pageIndex: number;
+    perPage: number;
+    totalCount: number;
+  };
+};
 
 export async function getOrders({
   pageIndex,
@@ -35,7 +35,7 @@ export async function getOrders({
       customerName,
       status,
     },
-  })
+  });
 
-  return response.data
+  return response.data;
 }
