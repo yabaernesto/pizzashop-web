@@ -1,28 +1,32 @@
-import { formatDistanceToNow } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-import { ArrowRight, Search, X } from 'lucide-react'
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { ArrowRight, Search, X } from 'lucide-react';
+import { useState } from 'react';
 
-import { OrderDetails } from '@/components/order-details'
-import { OrderStatus } from '@/components/order-status'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { TableCell, TableRow } from '@/components/ui/table'
+import { OrderStatus } from '@/components/order-status';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { TableCell, TableRow } from '@/components/ui/table';
+
+import { OrderDetails } from './order-details';
 
 export type OrderTableRowProps = {
   order: {
-    orderId: string
-    createdAt: string
-    status: 'pending' | 'processing' | 'delivering' | 'delivered' | 'canceled'
-    total: string
-    customerName: string
-  }
-}
+    orderId: string;
+    createdAt: string;
+    status: 'pending' | 'processing' | 'delivering' | 'delivered' | 'canceled';
+    total: string;
+    customerName: string;
+  };
+};
 
 export function OrderTableRow({ order }: OrderTableRowProps) {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
   return (
     <TableRow>
       <TableCell>
-        <Dialog>
+        <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
             <Button className="cursor-pointer" size="xs" variant="outline">
               <Search className="h-3 w-3" />
@@ -30,10 +34,10 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
             </Button>
           </DialogTrigger>
 
-          <OrderDetails />
+          <OrderDetails open={isDetailsOpen} orderId={order.orderId} />
         </Dialog>
       </TableCell>
-      <TableCell className="font-medium font-mono text-xs">
+      <TableCell className="font-mono text-xs font-medium">
         {order.orderId}
       </TableCell>
       <TableCell className="text-muted-foreground">
@@ -65,5 +69,5 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         </Button>
       </TableCell>
     </TableRow>
-  )
+  );
 }
