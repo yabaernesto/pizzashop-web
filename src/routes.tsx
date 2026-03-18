@@ -1,15 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { Dashboard } from './pages/dashboard/dashboard'
 import { SignIn } from './pages/auth/sign-in'
+import { SignUp } from './pages/auth/sign-up'
 import { AppLayout } from './pages/_layout/app'
 import { AuthLayout } from './pages/_layout/auth'
-import { SignUp } from './pages/auth/sign-up'
+import { Dashboard } from './pages/dashboard/dashboard'
+import { Orders } from './pages/dashboard/orders/orders'
 
 export const router = createBrowserRouter([
   { 
     path: '/', element: <AppLayout />,
-    children: [{ path: '/', element: <Dashboard />}]
+    children: [
+      { path: '/', element: <Dashboard />},
+      { path: '/orders', element: <Orders />}
+    ]
   },
   { 
     path: '/', element: <AuthLayout />,
