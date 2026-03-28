@@ -22,7 +22,7 @@ import { updateProfile } from "@/api/update-profile";
 
 const storeProfileSchema = z.object({
   name: z.string().min(1),
-  description: z.string()
+  description: z.string().nullable()
 })
 
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>
@@ -39,10 +39,8 @@ export function StoreProfileDialog() {
     staleTime: Infinity
   })
 
-  const { mutateAsync: updateProfileFn } = useMutation({
-    mutationFn: updateProfile,
-    onSuccess(_, { name, description }) {
-      // cache da request
+  function updatedManagedRestaurantCached({ name, description }: StoreProfileSchema) {
+    // cache da request
       const cached = queryClient.getQueryData<GetManagerRestaurantResponse>(['managed-restaurant'])
 
       if (cached) {
@@ -52,6 +50,21 @@ export function StoreProfileDialog() {
           name,
           description
         })
+      }
+
+      return { cached }
+  }
+
+  const { mutateAsync: updateProfileFn } = useMutation({
+    mutationFn: updateProfile,
+    onMutate({ name, description }) {
+      const { cached } = updatedManagedRestaurantCached({ name, description })
+
+      return { previousProfile: cached }
+    },
+    onError(_, __, context) {
+      if (context?.previousProfile) {
+        updatedManagedRestaurantCached(context.previousProfile)
       }
     },
   })
@@ -68,7 +81,7 @@ export function StoreProfileDialog() {
     try {
       await updateProfileFn({
         name: data.name,
-        description: data.description
+        description: data.description ?? ""
       })
 
       toast.success('Perfil atualizado com sucesso!')
