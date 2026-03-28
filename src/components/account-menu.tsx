@@ -20,12 +20,20 @@ import { StoreProfileDialog } from "./store-profile-dialog";
 export function AccountMenu() {
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
-    queryFn: getProfile
+    queryFn: getProfile,
+    // a cada 1s essa informação vai se considerar obsoleta e atualizar com os dados da api
+    // staleTime: 1000,
+    // nao recarregar mesmo se o usuário der foco no navegador
+    staleTime: Infinity
   })
 
   const { data: managedRestaurant, isLoading: isLoadingManagedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
-    queryFn: getManagerRestaurant
+    queryFn: getManagerRestaurant,
+    // a cada 1s essa informação vai se considerar obsoleta e atualizar com os dados da api
+    // staleTime: 1000,
+    // nao recarregar mesmo se o usuário der foco no navegador
+    staleTime: Infinity
   })
 
   return (
