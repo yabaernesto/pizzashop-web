@@ -14,29 +14,28 @@ import {
 import { Skeleton } from "./ui/skeleton";
 import { Dialog, DialogTrigger } from "./ui/dialog";
 
+import { StoreProfileDialog } from "./store-profile-dialog";
+
 import { signOut } from "@/api/sign-out";
 import { getProfile } from "@/api/get-profile";
-import { StoreProfileDialog } from "./store-profile-dialog";
-import { getManagerRestaurant } from "@/api/get-managed-restaurant";
+import { getManagedRestaurant } from "@/api/get-managed-restaurant";
 
 export function AccountMenu() {
   const navigate = useNavigate()
 
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
+    // query key: serve para identificar unicamente uma requisição Usa o cache para evitar requisições duplicadas
     queryKey: ['profile'],
     queryFn: getProfile,
-    // a cada 1s essa informação vai se considerar obsoleta e atualizar com os dados da api
-    // staleTime: 1000,
-    // nao recarregar mesmo se o usuário der foco no navegador
     staleTime: Infinity
   })
 
   const { data: managedRestaurant, isLoading: isLoadingManagedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
-    queryFn: getManagerRestaurant,
+    queryFn: getManagedRestaurant,
     // a cada 1s essa informação vai se considerar obsoleta e atualizar com os dados da api
     // staleTime: 1000,
-    // nao recarregar mesmo se o usuário der foco no navegador
+    // nao recarregar mesmo se o usuário der foco (acessar) no navegador
     staleTime: Infinity
   })
 

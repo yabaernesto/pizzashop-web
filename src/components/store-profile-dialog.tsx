@@ -17,7 +17,8 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 
-import { getManagerRestaurant, type GetManagerRestaurantResponse } from "@/api/get-managed-restaurant";
+import { getManagedRestaurant, 
+  type GetManagedRestaurantResponse } from "@/api/get-managed-restaurant";
 import { updateProfile } from "@/api/update-profile";
 
 const storeProfileSchema = z.object({
@@ -32,49 +33,59 @@ export function StoreProfileDialog() {
 
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
-    queryFn: getManagerRestaurant,
-    // a cada 1s essa informação vai se considerar obsoleta e atualizar com os dados da api
-    // staleTime: 1000,
-    // nao recarregar mesmo se o usuário der foco no navegador
+    queryFn: getManagedRestaurant,
     staleTime: Infinity
   })
 
-  function updatedManagedRestaurantCached({ name, description }: StoreProfileSchema) {
-    // cache da request
-      const cached = queryClient.getQueryData<GetManagerRestaurantResponse>(['managed-restaurant'])
-
-      if (cached) {
-        // atualizar cache da request
-        queryClient.setQueryData<GetManagerRestaurantResponse>(['managed-restaurant'], {
-          ...cached,
-          name,
-          description
-        })
-      }
-
-      return { cached }
-  }
-
-  const { mutateAsync: updateProfileFn } = useMutation({
-    mutationFn: updateProfile,
-    onMutate({ name, description }) {
-      const { cached } = updatedManagedRestaurantCached({ name, description })
-
-      return { previousProfile: cached }
-    },
-    onError(_, __, context) {
-      if (context?.previousProfile) {
-        updatedManagedRestaurantCached(context.previousProfile)
-      }
-    },
-  })
-
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm<StoreProfileSchema>({
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { 
+      isSubmitting 
+    } 
+  } = useForm<StoreProfileSchema>({
     resolver: zodResolver(storeProfileSchema),
     values: {
       name: managedRestaurant?.name ?? '',
       description: managedRestaurant?.description ?? ''
     }
+  })
+
+  function updatedManagedRestaurantCached({ name, description }: StoreProfileSchema) {
+    // cache da request
+    const cached = queryClient.getQueryData<GetManagedRestaurantResponse>(
+      ["managed-restaurant"]
+    )
+
+    if (cached) {
+      // atualizar cache da request
+      queryClient.setQueryData<GetManagedRestaurantResponse>(
+        ["managed-restaurant"], 
+        {
+          ...cached,
+          name,
+          description,
+        }
+      )
+    }
+
+    return { cached }
+  }
+
+  const { mutateAsync: updateProfileFn } = useMutation({
+    mutationFn: updateProfile,
+    onMutate({ name, description }) {
+      // salvar as informações na var cached antes de atualizar as informações
+      const { cached } = updatedManagedRestaurantCached({ name, description })
+      // tudo que e retornado em onMutate e adicionado ao "context"
+      return { previousProfile: cached }
+    },
+    onError(_, __, context) {
+      // context: sao informações que podem ser compartilhadas entre o contexto de uma mutation/query
+      if (context?.previousProfile) {
+        updatedManagedRestaurantCached(context.previousProfile)
+      }
+    },
   })
 
   async function handleUpdateProfile(data: StoreProfileSchema) {
@@ -109,8 +120,14 @@ export function StoreProfileDialog() {
 
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="description">Descrição</Label>
-            <Textarea className="col-span-3" id="description" {...register('description')} />
+            <Label className="text-right" htmlFor="description">
+              Descrição
+            </Label>
+            <Textarea 
+              className="col-span-3" 
+              id="description" 
+              {...register('description')} 
+            />
           </div>
         </div>
 

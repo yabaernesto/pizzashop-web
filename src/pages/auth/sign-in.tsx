@@ -1,13 +1,14 @@
+import { Link, useSearchParams } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { z } from 'zod'
+import { email, z } from 'zod'
 
 import { Button } from '../../components/ui/button'
 import { Label } from '../../components/ui/label'
 import { Input } from '../../components/ui/input'
-import { useMutation } from '@tanstack/react-query'
+
 
 import { signIn } from '@/api/sign-in'
 
@@ -28,7 +29,7 @@ export function SignIn() {
   })
 
   const { mutateAsync: authenticate } = useMutation({
-    mutationFn: signIn
+    mutationFn: signIn,
   })
 
   async function handleSignIn(data: SignInForm) {
