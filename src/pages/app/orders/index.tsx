@@ -29,13 +29,17 @@ export function Orders() {
 
   const { data: result } = useQuery({
     queryKey: ['orders', pageIndex, orderId, customerName, status],
-    queryFn: () => getOrders({ pageIndex }),
+    queryFn: () => getOrders({ 
+      pageIndex,
+      orderId,
+      customerName,
+      status: status === 'all' ? null : status,
+    }),
   })
 
   function handlePaginate(pageIndex: number) {
     setSearchParams((state) => {
       state.set('page', (pageIndex + 1).toString())
-
       return state
     })
   }
