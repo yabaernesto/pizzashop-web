@@ -29,7 +29,7 @@ export function Orders() {
 
   const { data: result } = useQuery({
     queryKey: ['orders', pageIndex, orderId, customerName, status],
-    queryFn: () => getOrders(),
+    queryFn: () => getOrders({ pageIndex }),
   })
 
   function handlePaginate(pageIndex: number) {
