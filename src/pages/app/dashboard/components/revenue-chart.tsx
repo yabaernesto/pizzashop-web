@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
 import { subDays } from 'date-fns';
+import { Loader2 } from 'lucide-react';
 import colors from 'tailwindcss/colors';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { DateRange } from 'react-day-picker';
 
@@ -66,7 +67,7 @@ export function RevenueChart() {
         </div>
       </CardHeader>
       <CardContent>
-        {chartDate && (
+        {chartDate ? (
           <ResponsiveContainer
             width="100%"
             height={240}
@@ -95,6 +96,10 @@ export function RevenueChart() {
               />
             </LineChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="h-[240px] w-full flex items-center justify-center">
+            <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
+          </div>
         )}
       </CardContent>
     </Card>
