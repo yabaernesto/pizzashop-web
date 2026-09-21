@@ -12,6 +12,8 @@ import {
   getMonthCanceledOrdersAmount 
 } from "@/api/get-month-canceled-orders-amount";
 
+import { MetricCardSkelton } from "./metric-card-skeleton";
+
 export function MonthCanceledOrdersAmountCard() {
   const { data: mothCanceledOrdersAmount } = useQuery({
     queryKey: ["metrics", "month-canceled-orders-amount"],
@@ -25,7 +27,7 @@ export function MonthCanceledOrdersAmountCard() {
           <DollarSign className='h-4 w-4 text-muted-foreground' />
         </CardHeader>
       <CardContent className='space-y-1'>
-        {mothCanceledOrdersAmount && (
+        {mothCanceledOrdersAmount ? (
           <>
             <span className="text-2xl font-bold tracking-tight">
               {mothCanceledOrdersAmount.amount.toLocaleString("pt-BR")}
@@ -48,6 +50,8 @@ export function MonthCanceledOrdersAmountCard() {
               )}
             </p>
           </>
+        ) : (
+          <MetricCardSkelton />
         )}
       </CardContent>
     </Card>

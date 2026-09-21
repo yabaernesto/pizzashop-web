@@ -10,6 +10,8 @@ import {
 
 import { getMothOrdersAmount } from "@/api/get-month-orders-amount";
 
+import { MetricCardSkelton } from "./metric-card-skeleton";
+
 export function MonthOrdersAmountCard() {
   const { data: mothOrdersAmount } = useQuery({
     queryKey: ["metrics", "month-orders-amount"],
@@ -23,7 +25,7 @@ export function MonthOrdersAmountCard() {
           <Utensils className='h-4 w-4 text-muted-foreground' />
         </CardHeader>
       <CardContent className='space-y-1'>
-        {mothOrdersAmount && (
+        {mothOrdersAmount ? (
           <>
             <span className="text-2xl font-bold tracking-tight">
               {mothOrdersAmount.amount.toLocaleString("pt-BR")}
@@ -46,6 +48,8 @@ export function MonthOrdersAmountCard() {
               )}
             </p>
           </>
+        ) : (
+          <MetricCardSkelton />
         )}
       </CardContent>
     </Card>
