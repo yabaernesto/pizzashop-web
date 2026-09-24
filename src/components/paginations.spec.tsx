@@ -1,17 +1,19 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Pagination } from "./pagination";
 
-// spie
+// spies: sao funções que nao tem nenhum tipo de comportamento, 
+// servem para garantir que o código chegou em algum lugar. 
+// E uma função que anota dentro dela mesma quantas vezes foi chamada, 
+// com quais parametros. E uma função para saber se algum callback foi chamado ou nao
 const onPageChangeCallback = vi.fn();
 
 describe("Pagination", () => {
-  // spies: sao funções que nao tem nenhum tipo de comportamento, 
-  // servem para garantir que o código chegou em algum lugar. 
-  // E uma função que anota dentro dela mesma quantas vezes foi chamada, 
-  // com quais parametros. E uma função para saber se algum callback foi chamado ou nao
+  beforeEach(() => {
+    onPageChangeCallback.mockClear()
+  })
 
   it("should display the right amount of pages of results", () => {
     const wrapper = render(
@@ -19,7 +21,7 @@ describe("Pagination", () => {
         pageIndex={0}
         totalCount={200}
         perPage={10}
-        onPageChange={() => {}}
+        onPageChange={onPageChangeCallback}
       />
     );
 
@@ -46,5 +48,65 @@ describe("Pagination", () => {
 
     // expect(onPageChangeCallback).toHaveBeenCalled();
     expect(onPageChangeCallback).toHaveBeenCalledWith(1);
+  })
+  it("should be able to navigate to the previous page", async () => {
+    const user = userEvent.setup();
+
+    const wrapper = render(
+      <Pagination
+        pageIndex={5}
+        totalCount={200}
+        perPage={10}
+        onPageChange={onPageChangeCallback}
+      />
+    );
+
+    const previousPageButton = wrapper.getByRole("button", {
+      name: "Página anterior"
+    });
+
+    await user.click(previousPageButton);
+
+    expect(onPageChangeCallback).toHaveBeenCalledWith(4);
+  })
+  it("should be able to navigate to the first page", async () => {
+    const user = userEvent.setup();
+
+    const wrapper = render(
+      <Pagination
+        pageIndex={5}
+        totalCount={200}
+        perPage={10}
+        onPageChange={onPageChangeCallback}
+      />
+    );
+
+    const firstPageButton = wrapper.getByRole("button", {
+      name: "Primeira página"
+    });
+
+    await user.click(firstPageButton);
+
+    expect(onPageChangeCallback).toHaveBeenCalledWith(0);
+  })
+  it("should be able to navigate to the last page", async () => {
+    const user = userEvent.setup();
+
+    const wrapper = render(
+      <Pagination
+        pageIndex={0}
+        totalCount={200}
+        perPage={10}
+        onPageChange={onPageChangeCallback}
+      />
+    );
+
+    const lastPageButton = wrapper.getByRole("button", {
+      name: "Última página"
+    });
+
+    await user.click(lastPageButton);
+
+    expect(onPageChangeCallback).toHaveBeenCalledWith(19);
   })
 })
