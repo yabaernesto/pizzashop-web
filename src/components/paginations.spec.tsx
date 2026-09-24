@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import { Pagination } from "./pagination";
 
+// spie
 const onPageChangeCallback = vi.fn();
 
 describe("Pagination", () => {
