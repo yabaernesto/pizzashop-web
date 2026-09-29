@@ -1,0 +1,17 @@
+import { http, HttpResponse } from 'msw'
+
+import type { GetMothCanceledOrdersAmountResponse } from '../get-month-canceled-orders-amount'
+
+export const getMonthCanceledOrdersAmountMock = http.get<
+  never,
+  never,
+  GetMothCanceledOrdersAmountResponse
+>(
+  '/metrics/month-canceled-orders-amount', 
+  () => {
+    return HttpResponse.json({
+      amount: 5,
+      diffFromLastMonth: -5,
+    })
+  }
+)

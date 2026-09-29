@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 
-interface GetMothCanceledOrdersAmountResponse {
+export interface GetMothCanceledOrdersAmountResponse {
   amount: number;
   diffFromLastMonth: number;
 }

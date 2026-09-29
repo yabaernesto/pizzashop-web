@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 
-interface GetMothRevenueResponse {
+export interface GetMothRevenueResponse {
   receipt: number;
   diffFromLastMonth: number;
 }
