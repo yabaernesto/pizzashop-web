@@ -20,6 +20,8 @@ export function AppLayout() {
           if (status === 401 && code === "UNAUTHORIZED") {
             // replace: nao permitir voltar a pagina anterior
             navigate("/sign-in", { replace: true })
+          } else {
+            throw error
           }
         }
       }
