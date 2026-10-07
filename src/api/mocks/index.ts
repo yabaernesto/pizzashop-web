@@ -5,6 +5,10 @@ import { env } from '@/env'
 import { signInMock } from './sign-in-mock'
 import { getOrdersMock } from './get-orders-mock'
 import { getProfileMock } from './get-profile-mock'
+import { cancelOrderMock } from './cancel-order-mock'
+import { approveOrderMock } from './approve-order-mock'
+import { deliverOrderMock } from './delivery-order-mock'
+import { dispatchOrderMock } from './dispatch-order-mock'
 import { updateProfileMock } from './update-profile-mock'
 import { getMonthRevenueMock } from './get-month-revenue-mock'
 import { getOrdersDetailsMock } from './get-orders-details-mock'
@@ -30,6 +34,10 @@ export const worker = setupWorker(
   getManagedRestaurantMock,
   getOrdersMock,
   getOrdersDetailsMock,
+  approveOrderMock,
+  deliverOrderMock,
+  dispatchOrderMock,
+  cancelOrderMock,
 )
 
 export async function enableMSW() {
